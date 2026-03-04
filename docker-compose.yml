@@ -1,0 +1,34 @@
+# 프로젝트 실행에 필요한 서비스를 한 번에 띄웁니다.
+# 사용 전: .env 파일을 만들고 Supabase 등 환경 변수를 넣어 주세요. (참고: .env.example)
+#
+# 로컬/서버 공통: docker compose up -d
+# Watchtower 포함 (이미지 자동 갱신): docker compose --profile watchtower up -d
+# 배포 서버에서 ghcr.io 이미지 사용: docker-compose.prod.example.yml 참고
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aite:latest
+    container_name: aite
+    ports:
+      - "80:80"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  # Watchtower: ghcr.io 이미지가 갱신되면 자동으로 app 컨테이너를 새 이미지로 교체합니다.
+  # 사용법: docker compose --profile watchtower up -d
+  # private 이미지일 때: .env.watchtower 에 DOCKER_USER, DOCKER_PASSWORD 설정 후 사용
+  watchtower:
+    image: containrrr/watchtower
+    container_name: aite-watchtower
+    profiles:
+      - watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env.watchtower
+    command: --interval 300 aite

@@ -1,0 +1,9 @@
+# 배포 서버에서 ghcr.io 이미지를 쓰려면:
+# 1. 이 파일을 docker-compose.prod.yml 로 복사
+# 2. YOUR_GITHUB_USERNAME 을 본인 GitHub 사용자명(또는 org)으로 변경
+# 3. 실행: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  app:
+    image: ghcr.io/YOUR_GITHUB_USERNAME/aite:latest
+    build: ~

@@ -1,0 +1,22 @@
+export type FoodEntry = {
+  id: string;
+  user_id: string;
+  date: string;
+  description: string;
+  image_path: string | null;
+  ai_status?: "pending" | "running" | "done" | "error" | string;
+  ai_error?: string | null;
+  ai_analyzed_at?: string | null;
+  ai_name?: string | null;
+  ai_category?: string | null;
+  ai_kcal?: number | null;
+  ai_carbs_g?: number | null;
+  ai_protein_g?: number | null;
+  ai_fat_g?: number | null;
+  ai_sugar_g?: number | null;
+  ai_sodium_mg?: number | null;
+  ai_raw?: unknown;
+  ai_comment?: string | null;
+  created_at: string;
+  updated_at: string;
+};
