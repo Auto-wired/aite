@@ -41,10 +41,11 @@
 
 | 단계 | 어디서 | 할 일 |
 |------|--------|--------|
-| 3-1 | GitHub | 저장소가 private이면 패키지(ghcr.io) 읽기용 토큰 준비 |
-| 3-2 | 서버 | Docker 설치, 프로젝트용 `.env` 파일 생성 (Git 없이) |
-| 3-3 | 서버 | 최초 1회: ghcr.io 로그인 + 컨테이너 실행 |
-| 3-4 | 서버 | Watchtower 설치·실행 (같은 서버에서 이미지 감시) |
+| 3-1 | GitHub | **Secrets**에 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` 등록 (빌드 시 사용) |
+| 3-2 | GitHub | 저장소가 private이면 패키지(ghcr.io) 읽기용 토큰 준비 |
+| 3-3 | 서버 | Docker 설치, 프로젝트용 `.env` 파일 생성 (선택, 서버 전용 추가 변수용) |
+| 3-4 | 서버 | 최초 1회: ghcr.io 로그인 + 컨테이너 실행 |
+| 3-5 | 서버 | Watchtower 설치·실행 (같은 서버에서 이미지 감시) |
 
 ---
 
@@ -55,7 +56,34 @@
 - `main`에 push하면 `.github/workflows/deploy.yml`이 실행되어 이미지를 빌드하고 **ghcr.io**에 push합니다.
 - 별도 설정 없이 **GITHUB_TOKEN**으로 push 가능합니다.
 
-### 4-2. 이미지가 private인 경우 (저장소가 private이면 보통 private)
+### 4-2. Supabase 환경 변수 (필수)
+
+Next.js는 **`NEXT_PUBLIC_*` 환경 변수를 빌드 시점에** JavaScript 번들에 넣습니다.  
+실행 시 `docker run --env-file .env`로 넘겨도 이미 빌드된 코드는 바뀌지 않으므로, **반드시 이미지를 빌드할 때** 이 값들이 들어가야 합니다.
+
+GitHub Actions에서 이미지를 빌드하므로, **저장소 Secrets**에 다음 두 개를 등록해 두세요.
+
+1. GitHub 저장소 → **Settings** → **Secrets and variables** → **Actions**
+2. **New repository secret** 로 아래 두 개 추가:
+
+| Name | Value |
+|------|--------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 프로젝트 URL (예: `https://xxxx.supabase.co`) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon (public) key |
+
+이렇게 해 두면 워크플로에서 Docker 빌드 시 `--build-arg`로 넘기고, 이미지 안에 Supabase 설정이 포함됩니다.  
+**이 값들을 추가한 뒤에는 한 번 다시 push하거나 "Run workflow"로 빌드를 다시 돌려야** 새 이미지에 반영됩니다.
+
+로컬에서 직접 `docker build` 할 때는:
+
+```bash
+docker build \
+  --build-arg NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co \
+  --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key \
+  -t aite .
+```
+
+### 4-3. 이미지가 private인 경우 (저장소가 private이면 보통 private)
 
 서버에서 이 이미지를 pull하려면 **Personal Access Token (PAT)** 이 필요합니다.
 
