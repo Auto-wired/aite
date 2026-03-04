@@ -124,12 +124,20 @@ cd ~/aite-app
 nano .env
 ```
 
-`.env` 내용 예시 (Supabase 사용 시):
+`.env` 내용 예시:
 
 ```env
+# Supabase (이미지는 빌드 시 GitHub Secrets로 들어가므로 서버 .env 는 선택)
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGc...
+
+# Gemini AI 음식 분석 (서버에서만 읽음 → 반드시 여기 .env 에 넣기)
+GEMINI_API_KEY=your-gemini-api-key
+GEMINI_MODEL=gemini-2.0-flash
 ```
+
+- **NEXT_PUBLIC_*** : Docker 이미지는 GitHub Actions 빌드 시 이미 포함되므로, 서버 `.env`에 다시 넣지 않아도 됩니다. (넣어도 무방)
+- **GEMINI_API_KEY**, **GEMINI_MODEL** : 빌드에 포함되지 않고 **실행 시** 읽기 때문에, 서버 `.env`에 꼭 넣어야 AI 음식 분석이 동작합니다.
 
 저장 후 권한 제한:
 
