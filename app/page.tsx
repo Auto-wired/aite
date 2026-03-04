@@ -14,11 +14,9 @@ function toLocalDateStr(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
-function weekStart(d: Date) {
+function monthStart(d: Date): string {
   const x = new Date(d);
-  const day = x.getDay();
-  const monOffset = day === 0 ? -6 : 1 - day;
-  x.setDate(x.getDate() + monOffset);
+  x.setDate(1);
   x.setHours(0, 0, 0, 0);
   return toLocalDateStr(x);
 }
@@ -38,10 +36,10 @@ export default async function HomePage({
   const profile = await getProfile(user.id);
 
   const now = new Date();
-  const weekStartStr = weekStart(now);
+  const monthStartStr = monthStart(now);
   const today = todayStr();
   const params = await searchParams;
-  const from = params.from?.match(/^\d{4}-\d{2}-\d{2}$/) ? params.from : weekStartStr;
+  const from = params.from?.match(/^\d{4}-\d{2}-\d{2}$/) ? params.from : monthStartStr;
   const to = params.to?.match(/^\d{4}-\d{2}-\d{2}$/) ? params.to : today;
   const fromDate = from <= to ? from : to;
   const toDate = from <= to ? to : from;
