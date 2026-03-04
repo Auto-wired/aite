@@ -22,6 +22,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=80
+# 서버 날짜/시간을 한국 기준으로 통일 (오늘, 통계 구간 등)
+ENV TZ=Asia/Seoul
 EXPOSE 80
 
 RUN addgroup --system --gid 1001 nodejs

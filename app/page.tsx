@@ -7,18 +7,24 @@ import { MonthCalendar } from "@/components/calendar/month-calendar";
 import { DayPageClient } from "@/components/day/day-page-client";
 import { StatsPanel } from "@/components/stats-panel";
 
+function toLocalDateStr(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 function weekStart(d: Date) {
   const x = new Date(d);
   const day = x.getDay();
   const monOffset = day === 0 ? -6 : 1 - day;
   x.setDate(x.getDate() + monOffset);
   x.setHours(0, 0, 0, 0);
-  return x.toISOString().slice(0, 10);
+  return toLocalDateStr(x);
 }
 
-function todayStr() {
-  const d = new Date();
-  return d.toISOString().slice(0, 10);
+function todayStr(): string {
+  return toLocalDateStr(new Date());
 }
 
 export default async function HomePage({
@@ -130,43 +136,13 @@ export default async function HomePage({
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950">
       <AppHeader user={user} profile={profile} />
-      <main className="flex-1 p-3 sm:p-4 lg:grid lg:grid-cols-[minmax(280px,380px)_1fr] lg:gap-6 lg:p-6">
-        {/* 왼쪽 상단: 캘린더 / 왼쪽 하단: 통계 */}
-        <div className="flex w-full flex-col gap-4 overflow-visible lg:gap-6">
-          <section className="w-full overflow-visible">
-            <MonthCalendar selectedDate={selectedDate} />
-          </section>
-          <section className="w-full overflow-visible">
-            <Suspense fallback={<div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">통계 로딩 중…</div>}>
-              <StatsPanel
-                profile={profile}
-                selectedDate={selectedDate}
-                dayCount={dayStats.count}
-                dayKcal={dayStats.kcal}
-                dayCarbs={dayStats.carbs}
-                dayProtein={dayStats.protein}
-                dayFat={dayStats.fat}
-                daySugar={dayStats.sugar}
-                daySodium_mg={dayStats.sodium_mg}
-                dayCategoryCounts={dayCategoryCounts}
-                from={fromDate}
-                to={toDate}
-                rangeCount={rangeCount}
-                rangeKcal={rangeData.kcal}
-                rangeCarbs={rangeData.carbs}
-                rangeProtein={rangeData.protein}
-                rangeFat={rangeData.fat}
-                rangeSugar={rangeData.sugar}
-                rangeSodium_mg={rangeData.sodium_mg}
-                rangeDays={rangeDays}
-                categoryCounts={categoryCounts}
-              />
-            </Suspense>
-          </section>
-        </div>
-        {/* 오른쪽 전체: 식단 리스트 */}
-        <div className="mt-4 min-w-0 lg:mt-0">
-          <section className="w-full overflow-visible rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900 sm:p-4">
+      <main className="flex flex-1 flex-col gap-4 p-3 sm:p-4 lg:grid lg:grid-cols-[minmax(280px,380px)_1fr] lg:gap-6 lg:p-6">
+        {/* 모바일: order로 캘린더 → 식단 리스트 → 통계. PC: grid로 왼쪽(캘린더+통계) / 오른쪽(식단) */}
+        <section className="order-0 w-full overflow-visible lg:row-span-1">
+          <MonthCalendar selectedDate={selectedDate} />
+        </section>
+        <section className="order-1 w-full min-w-0 overflow-visible lg:order-none lg:row-span-2 lg:row-start-1 lg:col-start-2">
+          <div className="rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900 sm:p-4">
             <Suspense fallback={<div className="py-4 text-sm text-zinc-500">식단 로딩 중…</div>}>
               <DayPageClient
                 date={selectedDate}
@@ -176,8 +152,35 @@ export default async function HomePage({
                 title={selectedDateLabel}
               />
             </Suspense>
-          </section>
-        </div>
+          </div>
+        </section>
+        <section className="order-2 w-full overflow-visible lg:order-none lg:row-span-1">
+          <Suspense fallback={<div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">통계 로딩 중…</div>}>
+            <StatsPanel
+              profile={profile}
+              selectedDate={selectedDate}
+              dayCount={dayStats.count}
+              dayKcal={dayStats.kcal}
+              dayCarbs={dayStats.carbs}
+              dayProtein={dayStats.protein}
+              dayFat={dayStats.fat}
+              daySugar={dayStats.sugar}
+              daySodium_mg={dayStats.sodium_mg}
+              dayCategoryCounts={dayCategoryCounts}
+              from={fromDate}
+              to={toDate}
+              rangeCount={rangeCount}
+              rangeKcal={rangeData.kcal}
+              rangeCarbs={rangeData.carbs}
+              rangeProtein={rangeData.protein}
+              rangeFat={rangeData.fat}
+              rangeSugar={rangeData.sugar}
+              rangeSodium_mg={rangeData.sodium_mg}
+              rangeDays={rangeDays}
+              categoryCounts={categoryCounts}
+            />
+          </Suspense>
+        </section>
       </main>
     </div>
   );
