@@ -17,12 +17,21 @@ const DEFAULT_DAILY = {
   sodium_mg: 2000,
 } as const;
 
-export function getDailyRecommended(profile: ProfileLike): typeof DEFAULT_DAILY {
+export type DailyRecommended = {
+  kcal: number;
+  carbs_g: number;
+  protein_g: number;
+  fat_g: number;
+  sugar_g: number;
+  sodium_mg: number;
+};
+
+export function getDailyRecommended(profile: ProfileLike): DailyRecommended {
   const gender = profile?.gender?.trim();
   const height = profile?.height_cm != null ? Number(profile.height_cm) : NaN;
   const weight = profile?.weight_kg != null ? Number(profile.weight_kg) : NaN;
   const hasValid = gender && Number.isFinite(height) && height >= 100 && height <= 250 && Number.isFinite(weight) && weight >= 30 && weight <= 300;
-  if (!hasValid) return DEFAULT_DAILY;
+  if (!hasValid) return { ...DEFAULT_DAILY };
 
   const age = 30;
   const bmr =

@@ -216,10 +216,8 @@ export async function deleteFoodEntry(id: string, date: string, imagePath: strin
   return { error: null };
 }
 
-export async function getFoodImageUrl(imagePath: string) {
+export async function getFoodImageUrl(imagePath: string): Promise<string | null> {
   const supabase = await createClient();
-  const {
-    data: { signedUrl },
-  } = await supabase.storage.from(BUCKET).createSignedUrl(imagePath, 3600);
-  return signedUrl;
+  const { data } = await supabase.storage.from(BUCKET).createSignedUrl(imagePath, 3600);
+  return data?.signedUrl ?? null;
 }

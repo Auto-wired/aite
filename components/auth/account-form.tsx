@@ -74,7 +74,9 @@ export function AccountForm({ email, profile }: { email: string; profile: Profil
     setDeleteMessage(null);
     setDeleteLoading(true);
     const supabase = createClient();
-    const { error } = await supabase.auth.deleteUser();
+    // deleteUser is supported at runtime; types may lag in @supabase/supabase-js
+    const auth = supabase.auth as unknown as { deleteUser: () => Promise<{ error: { message: string } | null }> };
+    const { error } = await auth.deleteUser();
     setDeleteLoading(false);
     if (error) {
       setDeleteMessage(error.message);

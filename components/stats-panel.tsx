@@ -117,11 +117,11 @@ function StatCube({ box }: { box: StatBox }) {
         <div className="mt-2 flex flex-1 items-center justify-center">
           <StatsCategoryDonut categoryCounts={box.categoryCounts} size={80} />
         </div>
-      ) : (
+      ) : "value" in box ? (
         <p className="mt-1 text-xl font-semibold text-zinc-900 dark:text-zinc-100 sm:text-2xl">
           {box.value}
         </p>
-      )}
+      ) : null}
     </div>
   );
 }
