@@ -87,16 +87,16 @@ export function MonthCalendar({ selectedDate }: Props) {
   };
 
   return (
-    <div className="w-full min-w-0 max-w-full rounded-xl border border-zinc-200 bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-4">
-      <div className="mb-3 flex items-center justify-between sm:mb-4">
-        <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 sm:text-lg">
+    <div className="flex h-full min-h-0 w-full flex-col rounded-xl border border-zinc-200 bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-4">
+      <div className="mb-2 flex shrink-0 items-center justify-between sm:mb-3">
+        <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 sm:text-base">
           {year}년 {MONTH_NAMES[month]}
         </h2>
         <div className="flex gap-0.5 sm:gap-1">
           <button
             type="button"
             onClick={goPrev}
-            className="touch-target rounded p-1.5 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800 sm:min-h-0 sm:min-w-0"
+            className="rounded p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             aria-label="이전 달"
           >
             ‹
@@ -104,25 +104,25 @@ export function MonthCalendar({ selectedDate }: Props) {
           <button
             type="button"
             onClick={goToday}
-            className="touch-target rounded px-2 py-1 text-sm text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800 sm:min-h-0 sm:min-w-0"
+            className="rounded px-2 py-1 text-xs text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
           >
             오늘
           </button>
           <button
             type="button"
             onClick={goNext}
-            className="touch-target rounded p-1.5 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800 sm:min-h-0 sm:min-w-0"
+            className="rounded p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             aria-label="다음 달"
           >
             ›
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-7 gap-px text-center sm:gap-0.5">
+      <div className="grid min-h-0 flex-1 grid-cols-7 grid-rows-[auto_repeat(6,1fr)] gap-px text-center sm:gap-0.5">
         {DAY_NAMES.map((name) => (
           <div
             key={name}
-            className="py-0.5 text-[10px] font-medium text-zinc-500 dark:text-zinc-400 sm:py-1 sm:text-xs"
+            className="flex items-center justify-center text-[10px] font-medium text-zinc-400 dark:text-zinc-500 sm:text-xs"
           >
             {name}
           </div>
@@ -134,12 +134,12 @@ export function MonthCalendar({ selectedDate }: Props) {
             <Link
               key={cell.date}
               href={`/?date=${cell.date}`}
-              className={`flex min-h-9 items-center justify-center rounded-md text-xs transition sm:min-h-10 sm:text-sm
-                ${today ? "bg-zinc-900 font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900" : ""}
-                ${selected && !today ? "ring-2 ring-zinc-900 ring-inset dark:ring-zinc-100" : ""}
-                ${!today && cell.isCurrentMonth ? "text-zinc-900 dark:text-zinc-100" : ""}
+              className={`flex min-h-0 items-center justify-center rounded-md text-xs transition sm:text-sm
+                ${today ? "bg-zinc-900 font-medium text-white dark:bg-zinc-100 dark:text-zinc-900" : ""}
+                ${selected && !today ? "ring-2 ring-zinc-400 ring-inset dark:ring-zinc-500" : ""}
+                ${!today && cell.isCurrentMonth ? "text-zinc-800 dark:text-zinc-200" : ""}
                 ${!today && !cell.isCurrentMonth ? "text-zinc-400 dark:text-zinc-500" : ""}
-                ${!today ? "hover:bg-zinc-100 dark:hover:bg-zinc-800" : ""}
+                ${!today ? "hover:bg-zinc-100 dark:hover:bg-zinc-800/80" : ""}
               `}
             >
               {cell.day}

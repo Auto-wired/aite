@@ -82,7 +82,7 @@ function StatCube({ box }: { box: StatBox }) {
       </p>
       {"summary" in box && box.summary ? (
         <ul className="mt-2 space-y-0.5 text-sm text-zinc-600 dark:text-zinc-400">
-          <li>식단: {box.count}개</li>
+          <li>음식: {box.count}개</li>
           <li>칼로리: {box.kcal > 0 ? `${Math.round(box.kcal)} kcal` : "—"}</li>
           <li>탄수화물: {box.carbs > 0 ? `${Math.round(box.carbs)} g` : "—"}</li>
           <li>단백질: {box.protein > 0 ? `${Math.round(box.protein)} g` : "—"}</li>
@@ -135,7 +135,7 @@ export function StatsPanel(props: Props) {
 
   const dailyBoxes: StatBox[] = [
     {
-      label: "식단 기록",
+      label: "음식 기록",
       summary: true,
       count: props.dayCount,
       kcal: props.dayKcal,
@@ -174,7 +174,7 @@ export function StatsPanel(props: Props) {
 
   const rangeBoxes: StatBox[] = [
     {
-      label: "식단 기록",
+      label: "음식 기록",
       summary: true,
       count: props.rangeCount,
       kcal: props.rangeKcal,
@@ -225,7 +225,7 @@ export function StatsPanel(props: Props) {
   }
 
   return (
-    <section className="rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900 sm:p-4">
+    <section className="w-full rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900 sm:p-4 min-[1000px]:max-w-[500px]">
       <div className="mb-4 flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">

@@ -35,13 +35,13 @@ export function DayStatsPanel({
         오늘 하루 통계
       </h2>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-        {/* 1. 식단 기록 */}
+        {/* 1. 음식 기록 */}
         <div className="flex min-h-[140px] flex-col rounded-xl border border-zinc-100 p-3 dark:border-zinc-800 sm:min-h-[160px] sm:p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-500">
-            식단 기록
+            음식 기록
           </p>
           <ul className="mt-2 space-y-0.5 text-sm text-zinc-600 dark:text-zinc-400">
-            <li>식단: {count}개</li>
+            <li>음식: {count}개</li>
             <li>칼로리: {kcal > 0 ? `${Math.round(kcal)} kcal` : "—"}</li>
             <li>탄수화물: {carbs > 0 ? `${Math.round(carbs)} g` : "—"}</li>
             <li>단백질: {protein > 0 ? `${Math.round(protein)} g` : "—"}</li>

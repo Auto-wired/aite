@@ -62,14 +62,14 @@ export function DayPageClient({ date, userId, entries, profile, title }: Props) 
       <div className="flex flex-col gap-4 sm:gap-6">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-            {title ?? "식단 리스트"}
+            {title ?? "음식 리스트"}
           </h2>
           <button
             type="button"
             onClick={() => setAddModalOpen(true)}
             className="touch-target rounded-md bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 sm:min-h-0"
           >
-            식단 추가
+            음식 추가
           </button>
         </div>
 
@@ -121,7 +121,7 @@ export function DayPageClient({ date, userId, entries, profile, title }: Props) 
                   type="button"
                   onClick={async (e) => {
                     e.stopPropagation();
-                    if (!confirm("이 식단을 삭제할까요?")) return;
+                    if (!confirm("이 음식을 삭제할까요?")) return;
                     await deleteFoodEntry(entry.id, date, entry.image_path);
                     router.refresh();
                   }}

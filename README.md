@@ -1,6 +1,6 @@
 # Aite
 
-식단 사진을 기록하고 AI로 영양 정보를 분석해 보는 웹 앱입니다.
+음식 사진을 기록하고 AI로 영양 정보를 분석해 보는 웹 앱입니다.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev/)
@@ -25,7 +25,7 @@
 ### 기술 스택 요약
 
 - **Next.js** — 풀스택 React 프레임워크, 서버/클라이언트 컴포넌트, 라우팅
-- **Supabase** — 회원가입/로그인, 식단·프로필 데이터 저장, 음식 이미지 스토리지
+- **Supabase** — 회원가입/로그인, 음식·프로필 데이터 저장, 음식 이미지 스토리지
 - **Tailwind CSS** — 유틸리티 기반 스타일링
 - **TypeScript** — 정적 타입으로 유지보수성 향상
 - **Docker** — 동일 환경에서 로컬/서버 실행 및 배포

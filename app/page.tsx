@@ -134,14 +134,17 @@ export default async function HomePage({
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950">
       <AppHeader user={user} profile={profile} />
-      <main className="flex flex-1 flex-col gap-4 p-3 sm:p-4 lg:grid lg:grid-cols-[minmax(280px,380px)_1fr] lg:gap-6 lg:p-6">
-        {/* 모바일: order로 캘린더 → 식단 리스트 → 통계. PC: grid로 왼쪽(캘린더+통계) / 오른쪽(식단) */}
-        <section className="order-0 w-full overflow-visible lg:row-span-1">
-          <MonthCalendar selectedDate={selectedDate} />
-        </section>
-        <section className="order-1 w-full min-w-0 overflow-visible lg:order-none lg:row-span-2 lg:row-start-1 lg:col-start-2">
-          <div className="rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900 sm:p-4">
-            <Suspense fallback={<div className="py-4 text-sm text-zinc-500">식단 로딩 중…</div>}>
+      <div className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col">
+        <main className="flex min-w-0 flex-1 flex-col gap-4 p-3 sm:p-4 min-[1000px]:grid min-[1000px]:w-full min-[1000px]:grid-cols-[500px_1fr] min-[1000px]:grid-rows-[500px_auto] min-[1000px]:gap-8 min-[1000px]:p-6">
+          {/* 1000px 미만: 상단 달력 → 음식 리스트 → 하단 통계. 1000px 이상: 왼쪽 달력 500×500+통계, 오른쪽 음식 리스트 */}
+          <section className="order-0 w-full overflow-visible min-[1000px]:col-start-1 min-[1000px]:row-start-1 min-[1000px]:h-[500px] min-[1000px]:w-[500px] min-[1000px]:shrink-0">
+            <div className="h-full w-full min-h-[280px] aspect-[4/3] min-[1000px]:aspect-auto min-[1000px]:min-h-0 min-[1000px]:h-[500px] min-[1000px]:max-h-[500px] min-[1000px]:w-[500px]">
+              <MonthCalendar selectedDate={selectedDate} />
+            </div>
+          </section>
+          <section className="order-1 min-w-0 flex-1 overflow-visible min-[1000px]:col-start-2 min-[1000px]:row-span-2 min-[1000px]:row-start-1">
+          <div className="h-full min-h-0 w-full min-w-0 rounded-xl border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900 sm:p-4">
+            <Suspense fallback={<div className="py-4 text-sm text-zinc-500">음식 로딩 중…</div>}>
               <DayPageClient
                 date={selectedDate}
                 userId={user.id}
@@ -152,7 +155,7 @@ export default async function HomePage({
             </Suspense>
           </div>
         </section>
-        <section className="order-2 w-full overflow-visible lg:order-none lg:row-span-1">
+        <section className="order-2 w-full overflow-visible min-[1000px]:col-start-1 min-[1000px]:row-start-2">
           <Suspense fallback={<div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">통계 로딩 중…</div>}>
             <StatsPanel
               profile={profile}
@@ -179,7 +182,8 @@ export default async function HomePage({
             />
           </Suspense>
         </section>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

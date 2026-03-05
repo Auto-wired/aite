@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "AITE",
-  description: "날짜별 식단 기록과 AI 영양 분석",
+  description: "날짜별 음식 기록과 AI 영양 분석",
   icons: { icon: "/logo.png", apple: "/logo.png" },
 };
 
